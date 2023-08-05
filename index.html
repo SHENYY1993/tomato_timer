@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+
+    <link rel="apple-touch-icon" type="image/png"
+          href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png">
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="shortcut icon" type="image/x-icon"
+          href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico">
+
+    <link rel="mask-icon" type="image/x-icon"
+          href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg"
+          color="#111">
+
+
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
+
+
+    <title>CodePen - Pomodoro Timer</title>
+
+    <link rel="canonical" href="https://codepen.io/yoongtilee/pen/EgrbVb">
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flipclock/0.7.8/flipclock.css">
+
+    <style>
+        html, body {
+            width: auto;
+            height: auto;
+            min-height: 100%;
+
+            /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,e5e5e5+100 */
+            background: rgb(255, 255, 255); /* Old browsers */
+            background: -moz-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(229, 229, 229, 1) 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(229, 229, 229, 1) 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(229, 229, 229, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e5e5e5', GradientType=0); /* IE6-9 */
+        }
+
+        .title {
+            font-size: 128px;
+            font-family: 'Covered By Your Grace', cursive;
+            height: 200px;
+            width: 250px;
+            min-height: 200px;
+            line-height: 200px;
+            color: #F44336;
+        }
+
+        .clock-title {
+            font-size: 64px;
+            font-family: 'Covered By Your Grace', cursive;
+            color: #F44336;
+        }
+
+        .margin-top {
+            margin-top: 20px;
+        }
+
+        .flip-clock-divider .flip-clock-label {
+            font-size: 16px;
+            font-family: 'Covered By Your Grace', cursive;
+            color: #F44336;
+        }
+
+        .flip-clock-wrapper ul {
+            background: #F44336;
+        }
+
+        .flip-clock-wrapper ul li a div.up:after {
+            background-color: #F44336;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .flip-clock-wrapper ul li a div div.inn {
+            color: #fff;
+            text-shadow: 0 1px 1px #555;
+            background-color: #F44336;
+        }
+
+        .session-clock, .break-clock {
+            display: inline-block;
+            width: auto;
+        }
+
+        .btn-edit {
+            width: 64px;
+            font-size: 36px;
+            color: white;
+            background: #F44336;
+        }
+
+        .margin-right {
+            margin-right: 25px;
+        }
+
+        .btn-main {
+            width: 225px;
+            font-size: 36px;
+            color: white;
+            background: #F44336;
+            font-family: 'Covered By Your Grace', cursive;
+            margin: 10px 0;
+        }
+
+        .btn-main:hover {
+            color: white;
+        }
+
+        .btn-main:focus {
+            color: white;
+            outline: none;
+        }
+
+        .btn-edit:hover {
+            color: white;
+        }
+
+        .btn-edit:focus {
+            color: white;
+            outline: none;
+        }
+
+        #credit {
+            font-size: 32px;
+            color: #F44336;
+            font-family: 'Covered By Your Grace', cursive;
+        }
+    </style>
+
+    <script>
+        window.console = window.console || function (t) {
+        };
+    </script>
+
+
+</head>
+
+<body translate="no" id="body">
+
+
+<meta charset="UTF-8">
+<title>Pomodoro Timer</title>
+
+<link href="https://fonts.googleapis.com/css?family=Covered+By+Your+Grace" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+
+
+<div class="container text-center">
+    <div class="row margin-top">
+        <div class="col-md-3 col-md-offset-3 col-xs-6">
+            <img class="title" src="http://icons.iconarchive.com/icons/iconicon/veggies/256/tomato-icon.png">
+        </div>
+        <div class="col-md-3 col-xs-6">
+            <p class="title">Timer</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5 col-md-offset-1">
+            <div>
+                <h1 class="clock-title">Break</h1>
+            </div>
+            <div class="clock break-clock flip-clock-wrapper"><span class="flip-clock-divider minutes"><span
+                    class="flip-clock-label">Minutes</span><span class="flip-clock-dot top"></span><span
+                    class="flip-clock-dot bottom"></span></span>
+                <ul class="flip ">
+                    <li class="flip-clock-before"><a href="#">
+                        <div class="up">
+                            <div class="shadow"></div>
+                            <div class="inn">9</div>
+                        </div>
+                        <div class="down">
+                            <div class="shadow"></div>
+                            <div class="inn">9</div>
+                        </div>
+                    </a></li>
+                    <li class="flip-clock-active"><a href="#">
+                        <div class="up">
+                            <div class="shadow"></div>
+                            <div class="inn">0</div>
+                        </div>
+                        <div class="down">
+                            <div class="shadow"></div>
+                            <div class="inn">0</div>
+                        </div>
+                    </a></li>
+                </ul>
+                <ul class="flip play">
+                    <li class="flip-clock-before"><a href="#">
+                        <div class="up">
+                            <div class="shadow"></div>
+                            <div class="inn">4</div>
+                        </div>
+                        <div class="down">
+                            <div class="shadow"></div>
+                            <div class="inn">4</div>
+                        </div>
+                    </a></li>
+                    <li class="flip-clock-active"><a href="#">
+                        <div class="up">
+                            <div class="shadow"></div>
+                            <div class="inn">3</div>
+                        </div>
+                        <div class="down">
+                            <div class="shadow"></div>
+                            <div class="inn">3</div>
+                        </div>
+                    </a></li>
+                </ul>
+                <span class="flip-clock-divider seconds"><span class="flip-clock-label">Seconds</span><span
+                        class="flip-clock-dot top"></span><span class="flip-clock-dot bottom"></span></span>
+                <ul class="flip play">
+                    <li class="flip-clock-before"><a href="#">
+                        <div class="up">
+                            <div class="shadow"></div>
+                            <div class="inn">3</div>
+                        </div>
+                        <div class="down">
+                            <div class="shadow"></div>
+                            <div class="inn">3</div>
+                        </div>
+                    </a></li>
+                    <li class="flip-clock-active"><a href="#">
+                        <div class="up">
+                            <div class="shadow"></div>
+                            <div class="inn">2</div>
+                        </div>
+                        <div class="down">
+                            <div class="shadow"></div>
+                            <div class="inn">2</div>
+                        </div>
+                    </a></li>
+                </ul>
+                <ul class="flip play">
+                    <li class="flip-clock-before"><a href="#">
+                        <div class="up">
+                            <div class="shadow"></div>
+                            <div class="inn">4</div>
+                        </div>
+                        <div class="down">
+                            <div class="shadow"></div>
+                            <div class="inn">4</div>
+                        </div>
+                    </a></li>
+                    <li class="flip-clock-active"><a href="#">
+                        <div class="up">
+                            <div class="shadow"></div>
+                            <div class="inn">3</div>
+                        </div>
+                        <div class="down">
+                            <div class="shadow"></div>
+                            <div class="inn">3</div>
+                        </div>
+                    </a></li>
+                </ul>
+            </div>
+            <div>
+                <button type="button" class="btn btn-lg btn-edit" id="btn-reduce-break-minute">-</button>
+                <button type="button" class="btn btn-lg btn-edit margin-right" id="btn-increase-break-minute">+</button>
+                <button type="button" class="btn btn-lg btn-edit" id="btn-reduce-break-second">-</button>
+                <button type="button" class="btn btn-lg btn-edit" id="btn-increase-break-second">+</button>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <h1 class="clock-title">Session</h1>
+            <div class="clock session-clock flip-clock-wrapper"><span class="flip-clock-divider minutes"><span
+                    class="flip-clock-label">Minutes</span><span class="flip-clock-dot top"></span><span
+                    class="flip-clock-dot bottom"></span></span>
+                <ul class="flip ">
+                    <li class="flip-clock-before"><a href="#">
+                        <div class="up">
+                            <div class="shadow"></div>
+                            <div class="inn">1</div>
+                        </div>
+                        <div class="down">
+                            <div class="shadow"></div>
+                            <div class="inn">1</div>
+                        </div>
+                    </a></li>
+                    <li class="flip-clock-active"><a href="#">
+                        <div class="up">
+                            <div class="shadow"></div>
+                            <div class="inn">0</div>
+                        </div>
+                        <div class="down">
+                            <div class="shadow"></div>
+                            <div class="inn">0</div>
+                        </div>
+                    </a></li>
+                </ul>
+                <ul class="flip play">
+                    <li class="flip-clock-before"><a href="#">
+                        <div class="up">
+                            <div class="shadow"></div>
+                            <div class="inn">1</div>
+                        </div>
+                        <div class="down">
+                            <div class="shadow"></div>
+                            <div class="inn">1</div>
+                        </div>
+                    </a></li>
+                    <li class="flip-clock-active"><a href="#">
+                        <div class="up">
+                            <div class="shadow"></div>
+                            <div class="inn">0</div>
+                        </div>
+                        <div class="down">
+                            <div class="shadow"></div>
+                            <div class="inn">0</div>
+                        </div>
+                    </a></li>
+                </ul>
+                <span class="flip-clock-divider seconds"><span class="flip-clock-label">Seconds</span><span
+                        class="flip-clock-dot top"></span><span class="flip-clock-dot bottom"></span></span>
+                <ul class="flip play">
+                    <li class="flip-clock-before"><a href="#">
+                        <div class="up">
+                            <div class="shadow"></div>
+                            <div class="inn">1</div>
+                        </div>
+                        <div class="down">
+                            <div class="shadow"></div>
+                            <div class="inn">1</div>
+                        </div>
+                    </a></li>
+                    <li class="flip-clock-active"><a href="#">
+                        <div class="up">
+                            <div class="shadow"></div>
+                            <div class="inn">0</div>
+                        </div>
+                        <div class="down">
+                            <div class="shadow"></div>
+                            <div class="inn">0</div>
+                        </div>
+                    </a></li>
+                </ul>
+                <ul class="flip play">
+                    <li class="flip-clock-before"><a href="#">
+                        <div class="up">
+                            <div class="shadow"></div>
+                            <div class="inn">1</div>
+                        </div>
+                        <div class="down">
+                            <div class="shadow"></div>
+                            <div class="inn">1</div>
+                        </div>
+                    </a></li>
+                    <li class="flip-clock-active"><a href="#">
+                        <div class="up">
+                            <div class="shadow"></div>
+                            <div class="inn">0</div>
+                        </div>
+                        <div class="down">
+                            <div class="shadow"></div>
+                            <div class="inn">0</div>
+                        </div>
+                    </a></li>
+                </ul>
+            </div>
+            <div>
+                <button type="button" class="btn btn-lg btn-edit" id="btn-reduce-session-minute">-</button>
+                <button type="button" class="btn btn-lg btn-edit margin-right" id="btn-increase-session-minute">+
+                </button>
+                <button type="button" class="btn btn-lg btn-edit" id="btn-reduce-session-second">-</button>
+                <button type="button" class="btn btn-lg btn-edit" id="btn-increase-session-second">+</button>
+            </div>
+        </div>
+    </div>
+    <div class="row margin-top">
+        <button class="btn btn-lg btn-main" id="btn-start">Stop</button>
+        <button class="btn btn-lg btn-main" id="btn-stop-music">Stop Music</button>
+        <button class="btn btn-lg btn-main" id="btn-reset">Reset</button>
+
+    </div>
+
+    <p id="credit">Cute and New Beginning Music by <a href="http://www.bensound.com" target="_blank">http://www.bensound.com</a>
+    </p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.1/howler.core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flipclock/0.7.8/flipclock.min.js"></script>
+<script src="script.js"></script>
+
+
+<script id="rendered-js">
+    /**
+     * Created by LEE on 2016/10/19.
+     */
+
+    $(document).ready(function () {
+        var startButton = $("#btn-start");
+        var resetButton = $("#btn-reset");
+        var stopMusicButton = $("#btn-stop-music");
+        stopMusicButton.prop('disabled', true);
+
+        //use this to resume session or break when user
+        //stop then resume(start) the clock
+        var sessionWasRunning = true;
+
+        var isSessionStop = true;
+        var isBreakStop = true;
+
+        var resetSession = 1500;
+        var resetBreak = 300;
+
+        //user choice of session and break time
+
+        var sessionTime = 1500;
+        var breakTime = 300;
+
+        var sessionOverMusic = new Howl({
+            //edit this to the music you want to play
+            // src: ['music/bensound-cute.mp3'],
+            // src: ['http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3'],
+            src: ['break_music.mp3'],
+            onend: function () {
+                stopMusicButton.prop('disabled', true);
+            }
+        });
+
+
+        var breakOverMusic = new Howl({
+            //edit this to the music you want to play
+            src: ['https://www.bilibili.com/video/BV1Fx411a7RN/?vd_source=57e1d321f8a3595c9a8cc786a75ecc39'],
+            // src: ['http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3'],
+            // src: ['break_music.mp3'],
+            onend: function () {
+                stopMusicButton.disabled = true;
+            }
+        });
+
+
+        var sessionClock = $('.session-clock').FlipClock(sessionTime, {
+            clockFace: 'MinuteCounter',
+
+            countdown: true,
+            autoStart: false,
+
+            callbacks: {
+                interval: function () {
+                    var sessionTime = sessionClock.getTime().time;
+                    if (sessionTime == 0) {
+                        //set time again to offset the one second difference
+                        breakClock.setTime(breakTime + 1);
+                        breakClock.start();
+                        isBreakStop = false;
+
+                        isSessionStop = true;
+                        sessionWasRunning = false;
+
+                        playSessionOverMusic();
+
+                    } else if (breakTime == 0 && isBreakStop) {
+
+                        //set time for display
+                        breakClock.setTime(breakTime);
+                    }
+                }
+            }
+        });
+
+
+        var breakClock = $('.break-clock').FlipClock(breakTime, {
+            clockFace: 'MinuteCounter',
+
+            countdown: true,
+            autoStart: false,
+
+            callbacks: {
+                interval: function () {
+                    var breakTime = breakClock.getTime().time;
+
+                    if (breakTime == 0) {
+
+                        //set time again to offset the one second difference
+                        sessionClock.setTime(sessionTime + 1);
+                        sessionClock.start();
+                        isSessionStop = false;
+                        sessionWasRunning = true;
+
+                        isBreakStop = true;
+
+                        playBreakOverMusic();
+
+                    } else if (sessionTime == 0 && isSessionStop) {
+
+                        //set time for display
+                        sessionClock.setTime(sessionTime);
+                    }
+                }
+            }
+        });
+
+
+        /* Edit Time Section */
+
+        $("#btn-reduce-session-minute").click(function () {
+            changeSessionTime(-60);
+        });
+
+        $("#btn-increase-session-minute").click(function () {
+            changeSessionTime(60);
+        });
+
+        $("#btn-reduce-session-second").click(function () {
+            changeSessionTime(-1);
+        });
+
+        $("#btn-increase-session-second").click(function () {
+            changeSessionTime(1);
+        });
+
+        function changeSessionTime(time) {
+            if (sessionTime + time >= 0 && sessionTime + time <= 6000) {
+                stopAllClocks();
+                sessionTime += time;
+                sessionClock.setTime(sessionTime);
+            }
+        }
+
+        $("#btn-reduce-break-minute").click(function () {
+            changeBreakTime(-60);
+        });
+
+        $("#btn-increase-break-minute").click(function () {
+            changeBreakTime(60);
+        });
+
+        $("#btn-reduce-break-second").click(function () {
+            changeBreakTime(-1);
+        });
+
+        $("#btn-increase-break-second").click(function () {
+            changeBreakTime(1);
+        });
+
+        function changeBreakTime(time) {
+            if (breakTime + time >= 0 && breakTime + time <= 6000) {
+                stopAllClocks();
+                breakTime += time;
+                breakClock.setTime(breakTime);
+            }
+        }
+
+        /* End Edit Time Section */
+
+        startButton.click(function () {
+            if (sessionWasRunning && isSessionStop) {
+                sessionClock.start();
+                startButton.text("Stop");
+
+                isSessionStop = false;
+            } else if (!sessionWasRunning && isBreakStop) {
+                breakClock.start();
+                startButton.text("Stop");
+
+                isBreakStop = false;
+            } else if (!isSessionStop) {
+                sessionClock.stop();
+                startButton.text("Start");
+
+                isSessionStop = true;
+                sessionWasRunning = true;
+            } else if (!isBreakStop) {
+                breakClock.stop();
+                startButton.text("Start");
+
+                isBreakStop = true;
+                sessionWasRunning = false;
+            } else {
+
+            }
+
+        });
+
+        resetButton.click(function () {
+            //stop the countdown when reset is clicked
+
+            stopAllClocks();
+
+            sessionTime = resetSession;
+            breakTime = resetBreak;
+
+            sessionClock.setTime(sessionTime);
+            breakClock.setTime(breakTime);
+        });
+
+        stopMusicButton.click(function () {
+            sessionOverMusic.stop();
+            breakOverMusic.stop();
+
+            $(this).prop("disabled", true);
+        });
+
+        function stopAllClocks() {
+            sessionClock.stop();
+            isSessionStop = true;
+
+            breakClock.stop();
+            isBreakStop = true;
+
+            startButton.text("Start");
+        }
+
+        function playSessionOverMusic() {
+            stopMusicButton.prop('disabled', false);
+
+            if (isSessionStop) {
+                breakOverMusic.stop();
+                sessionOverMusic.play();
+            }
+        }
+
+        function playBreakOverMusic() {
+            stopMusicButton.prop('disabled', false);
+
+            if (isBreakStop) {
+                sessionOverMusic.stop();
+                breakOverMusic.play();
+            }
+        }
+
+
+    });
+    //# sourceURL=pen.js
+</script>
+
+</body>
+</html>
