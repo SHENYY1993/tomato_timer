@@ -408,13 +408,13 @@
         var isSessionStop = true;
         var isBreakStop = true;
 
-        var resetSession = 1500;
-        var resetBreak = 300;
+        var resetSession = 50 * 60;
+        var resetBreak = 10 * 60;
 
         //user choice of session and break time
 
-        var sessionTime = 1500;
-        var breakTime = 300;
+        var sessionTime = 50 * 60;
+        var breakTime = 10 * 60;
 
         var sessionOverMusic = new Howl({
             //edit this to the music you want to play
@@ -431,7 +431,7 @@
             //edit this to the music you want to play
             src: ['https://www.bilibili.com/video/BV1Fx411a7RN/?vd_source=57e1d321f8a3595c9a8cc786a75ecc39'],
             // src: ['http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3'],
-            // src: ['break_music.mp3'],
+            src: ['session_over.mp3'],
             onend: function () {
                 stopMusicButton.disabled = true;
             }
